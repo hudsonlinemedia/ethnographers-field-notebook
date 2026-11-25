@@ -269,7 +269,7 @@ select{width:auto;line-height:1.3}
  <header class="topbar">
   <button class="brand" onclick="home()" aria-label="Prof Honey's Field Notebook, back to the cover"><b>Prof Honey's Field Notebook</b><span>The Ethnographer's Field Notebook</span></button>
   <nav aria-label="Notebook">
-   <button class="tab" onclick="home()">Field sites</button>
+   <button class="tab" onclick="sites()">Field sites</button>
    <button class="tab" onclick="report()">My field notebook</button>
    <button class="tab" onclick="download()">Download report</button>
   </nav>
@@ -710,21 +710,26 @@ function home(){
   <div class="sub">Observe \u2022 Question \u2022 Participate \u2022 Revise</div>
   <div class="credit">Lead ethnographer \u00b7 Professor Honey</div>
   <div class="bubble r" id="homeBubble"></div>
-  <div class="row">${next<0?'<button class="btn primary" onclick="report()">View my field notebook</button>':`<button class="btn primary" onclick="openCase(${next})">${started?'Continue at field site '+(next+1):'Start the first field site'}</button>`}</div>
+  <div class="row">${next<0?'<button class="btn primary" onclick="report()">View my field notebook</button>':`<button class="btn primary" onclick="openCase(${next})">${started?'Continue at field site '+(next+1):'Start the first field site'}</button>`}<button class="btn" onclick="sites()">All field sites</button></div>
  </div><div class="thoney ph" id="homeHoney"></div></section>
+`;
+ honey(document.getElementById('homeHoney'),{pose:'notes',draw:true,dur:2.6});lenses();
+ bubble(document.getElementById('homeBubble'),started?`Welcome back${s.name?', '+esc(s.name):''}. Your notebook is right where you left it.`:'Hello, I’m Professor Honey. Grab a pencil. We’re going to learn to see the ordinary as strange, and the strange as ordinary.');
+ update();toTop()}
+
+function sites(){const started=Object.keys(s.a).length>0;const next=C.findIndex((c,i)=>!done(i));
+ v.innerHTML=`<div class="kicker">The Ethnographer\u2019s Field Notebook</div><h2>Field sites</h2>
  <div class="mission"><h2>Your mission</h2><p>Read your course module and watch the assigned videos first. Then investigate twelve field sites. Record an initial hypothesis, examine evidence one decision at a time, and revise your interpretation. First correct decisions earn one point; written work is not automatically graded. You can revisit feedback at any time. Work in several sessions and download your notebook before leaving; browser storage may not persist across devices.</p>
  <label><span>Your name (optional)</span><input type="text" value="${esc(s.name)}" oninput="s.name=this.value;saveSoon()" autocomplete="name"></label></div>`+
  PARTS.map(p=>`<section class="part"><div class="kicker">Part ${p.n}</div><h2>${p.t}</h2><div class="sites">${C.map((c,i)=>({c,i})).filter(({i})=>i>=p.from&&i<=p.to).map(({c,i})=>`<button class="sitecard" onclick="openCase(${i})"><span class="num">Field site ${i+1}</span><strong>${esc(c[0])}</strong><span class="dots" aria-label="${c[2].filter((q,k)=>s.a[i+'-'+k]).length} of ${c[2].length} decisions">${c[2].map((q,k)=>{const a=s.a[i+'-'+k];return `<i class="${a?(a.ok?'ok':'on'):''}"></i>`}).join('')}</span>${done(i)?'<span class="done">DONE</span>':''}</button>`).join('')}</div></section>`).join('')+
  `<section class="part"><div class="kicker">Optional</div><h2>Real-world mini-ethnography</h2><p>Observe an ordinary activity for 15–30 minutes in a setting where you have permission. Do not record identifying details or private conversations. Describe artifacts, behavior, tacit rules, differing meanings and one unanswered question.</p><label><span class="sr">Mini-ethnography</span><textarea oninput="s.mini=this.value;saveSoon()">${esc(s.mini)}</textarea></label></section>`;
- honey(document.getElementById('homeHoney'),{pose:'notes',draw:true,dur:2.6});lenses();
- bubble(document.getElementById('homeBubble'),started?`Welcome back${s.name?', '+esc(s.name):''}. Your notebook is right where you left it.`:'Hello, I’m Professor Honey. Grab a pencil. We’re going to learn to see the ordinary as strange, and the strange as ordinary.');
  update();toTop()}
 
 function openCase(i){const p=partOf(i);
  if(i===PARTS[p].from&&!seenPart[p]&&!C[i][2].some((q,j)=>s.a[i+'-'+j])){seenPart[p]=1;return chapter(p)}
  seenPart[p]=1;siteView(i)}
 function chapter(p){const P=PARTS[p];
- v.innerHTML=`<section class="chapter"><div class="ph" id="chHoney"></div><div><div class="kicker">Part</div><div class="roman">${P.n}</div><h2>${P.t}</h2><p class="muted">Field sites ${P.from+1}${P.to>P.from?'–'+(P.to+1):''}</p><div class="bubble l" id="chBubble"></div><div class="row"><button class="btn primary" onclick="siteView(${P.from})">Begin field site ${P.from+1}</button><button class="btn" onclick="home()">Back to all sites</button></div></div></section>`;
+ v.innerHTML=`<section class="chapter"><div class="ph" id="chHoney"></div><div><div class="kicker">Part</div><div class="roman">${P.n}</div><h2>${P.t}</h2><p class="muted">Field sites ${P.from+1}${P.to>P.from?'–'+(P.to+1):''}</p><div class="bubble l" id="chBubble"></div><div class="row"><button class="btn primary" onclick="siteView(${P.from})">Begin field site ${P.from+1}</button><button class="btn" onclick="sites()">Back to all sites</button></div></div></section>`;
  honey(document.getElementById('chHoney'),{pose:p%2?'write':'notes',draw:true,dur:1.8});bubble(document.getElementById('chBubble'),P.line);toTop()}
 
 let cur=-1;
@@ -736,7 +741,7 @@ function siteView(i,keep){const c=C[i];cur=i;let k=c[2].findIndex((q,j)=>!s.a[i+
  <label><span>Initial hypothesis / first reaction</span><textarea oninput="s.hyp[${i}]=this.value;saveSoon()">${esc(s.hyp[i])}</textarea></label>
  <label><span>Initial confidence</span><select onchange="s.conf[${i}]=this.value;save()">${['Not recorded','Low','Medium','High'].map(x=>`<option ${s.conf[i]===x?'selected':''}>${x}</option>`).join('')}</select></label>
  ${c[2].slice(0,Math.min(k+1,c[2].length)).map((q,j)=>decision(i,j)).join('')}
- ${k===c[2].length?`<section class="decision"><div class="kicker">Field notebook</div><h3>${esc(c[3])}</h3><label><span class="sr">Field notes</span><textarea oninput="s.notes[${i}]=this.value;saveSoon()">${esc(s.notes[i])}</textarea></label><label><span>What evidence changed or strengthened your initial hypothesis?</span><textarea oninput="s.rev[${i}]=this.value;saveSoon()">${esc(s.rev[i])}</textarea></label><div class="row"><button class="btn primary" onclick="${i<11?'openCase('+(i+1)+')':'report()'}">${i<11?'Next field site →':'View my final report'}</button><button class="btn" onclick="home()">All field sites</button></div></section>`:''}
+ ${k===c[2].length?`<section class="decision"><div class="kicker">Field notebook</div><h3>${esc(c[3])}</h3><label><span class="sr">Field notes</span><textarea oninput="s.notes[${i}]=this.value;saveSoon()">${esc(s.notes[i])}</textarea></label><label><span>What evidence changed or strengthened your initial hypothesis?</span><textarea oninput="s.rev[${i}]=this.value;saveSoon()">${esc(s.rev[i])}</textarea></label><div class="row"><button class="btn primary" onclick="${i<11?'openCase('+(i+1)+')':'report()'}">${i<11?'Next field site →':'View my final report'}</button><button class="btn" onclick="sites()">All field sites</button></div></section>`:''}
  </article></div>`;
  const side=document.getElementById('sideHoney'),b=document.getElementById('sideBubble');
  if(k===c[2].length){honey(side,{pose:'write',mouth:'grin'});bubble(b,i<11?'Site complete. Now the important part: write it up while it’s fresh.':'That’s the whole notebook. Write your final thick description, then download your report.')}

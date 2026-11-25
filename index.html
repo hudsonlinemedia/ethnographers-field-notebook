@@ -141,19 +141,21 @@ select{width:auto;line-height:1.3}
 .zlens{position:absolute;inset:0;border-radius:50%;overflow:hidden;-webkit-mask:radial-gradient(circle,#000 58%,transparent 70.5%);mask:radial-gradient(circle,#000 58%,transparent 70.5%)}
 .zrays{position:absolute;inset:-25%;background:repeating-conic-gradient(from 0deg,rgba(22,22,22,.16) 0 2.2deg,transparent 2.2deg 9deg);animation:spin 50s linear infinite;transition:opacity 1.6s ease}
 .zone:nth-of-type(2n) .zrays{animation-direction:reverse;animation-duration:64s}
-.zscene{position:absolute;inset:0;width:100%;height:100%;opacity:0;filter:blur(10px) grayscale(1);transform:scale(1.18) rotate(-8deg);transition:opacity 1.5s ease,filter 2s ease,transform 3.2s cubic-bezier(.2,.7,.2,1)}
+.zscene{position:absolute;inset:0;width:100%;height:100%;opacity:0;filter:blur(10px) grayscale(1);transform:scale(1.18) rotate(-8deg);transition:opacity 2.2s ease,filter 2.4s ease,transform 4s cubic-bezier(.2,.7,.2,1)}
 .zone.on .zscene{opacity:.72;filter:blur(0) grayscale(1);transform:scale(1) rotate(0)}
 .zone.on .zrays{opacity:.18}
 .zring{position:absolute;inset:6%;width:88%;height:88%;overflow:visible}
-.zring circle{fill:none;stroke:var(--ink);stroke-width:1.3;stroke-dasharray:1;stroke-dashoffset:1;opacity:.55;transition:stroke-dashoffset 2.2s ease .2s}
+.zring circle{fill:none;stroke:var(--ink);stroke-width:1.3;stroke-dasharray:1;stroke-dashoffset:1;opacity:.55;transition:stroke-dashoffset 5.5s cubic-bezier(.4,0,.2,1) .3s}
 .zone.on .zring circle{stroke-dashoffset:0}
 .zlabel{position:absolute;left:50%;bottom:-2%;transform:translate(-50%,6px) rotate(-3deg);white-space:nowrap;text-align:center;opacity:0;transition:opacity 1.2s ease .5s,transform 1.4s ease .5s;font:700 1.05rem/1.1 var(--hand);text-shadow:0 0 6px #fbf8f0,0 0 3px #fbf8f0}
 .zlabel small{display:block;font:italic .8rem var(--serif);color:var(--graphite)}
 .zone.on .zlabel{opacity:1;transform:translate(-50%,0) rotate(-3deg)}
-.z1{left:-2%;top:2%;width:clamp(260px,40%,420px)}
+.z1{left:-2%;top:9%;width:clamp(260px,38%,400px)}
 .z2{left:30%;top:46%;width:clamp(220px,30%,320px)}
-.z3{left:40%;top:4%;width:clamp(200px,26%,280px)}
+.z3{left:auto;right:23%;top:3%;width:clamp(200px,25%,270px)}
 .tcontent{z-index:3}
+.z1 .zlabel{left:auto;right:-8%;top:6%;bottom:auto;transform:translate(0,6px) rotate(-4deg);text-align:left}
+.zone.z1.on .zlabel{transform:translate(0,0) rotate(-4deg)}
 
 .qhead{display:grid;grid-template-columns:1fr 250px;gap:14px;align-items:center}
 .qimg{position:relative;margin:4px 4px 8px;background:#fffdf7;border:1.4px solid var(--ink);padding:6px;transform:rotate(1.2deg);box-shadow:2px 3px 0 rgba(0,0,0,.14)}
@@ -195,6 +197,8 @@ select{width:auto;line-height:1.3}
  .qhead{grid-template-columns:1fr}
  .qimg{max-width:280px;margin:6px auto 4px;order:-1}
  .z1{left:-14%;top:0;width:78%}
+ .z1 .zlabel{left:50%;right:auto;top:auto;bottom:-2%;transform:translate(-50%,6px) rotate(-3deg)}
+ .zone.z1.on .zlabel{transform:translate(-50%,0) rotate(-3deg)}
  .z2{left:auto;right:-10%;top:30%;width:62%}
  .z3{left:-12%;top:58%;width:58%}
  .tcontent{max-width:100%;padding:16px}
@@ -652,8 +656,8 @@ const LOCS=[{id:'scNYC',n:'New York City',s:'The anthropology of the ordinary'},
 let lensT=null;
 function lenses(){clearTimeout(lensT);const ts=document.getElementById('titleScreen');if(!ts)return;const Z=[...ts.querySelectorAll('.zone')];
  const set=(z,k)=>{const L=LOCS[k%LOCS.length];z.querySelector('.zscene use').setAttribute('href','#'+L.id);z.querySelector('.zlabel').innerHTML=esc(L.n)+'<small>'+esc(L.s)+'</small>'};
- if(matchMedia('(prefers-reduced-motion: reduce)').matches){Z.forEach((z,i)=>{set(z,i);z.classList.add('on')});return}
- let k=0;const step=()=>{if(!ts.isConnected)return;const z=Z[k%Z.length];set(z,k);z.classList.add('on');const zz=z;setTimeout(()=>zz.classList.remove('on'),6200);k++;lensT=setTimeout(step,3300)};
+ if(matchMedia('(prefers-reduced-motion: reduce)').matches){set(Z[0],0);Z[0].classList.add('on');return}
+ let k=0,prev=null;const step=()=>{if(!ts.isConnected)return;const z=Z[k%Z.length];if(prev)prev.classList.remove('on');set(z,k);z.classList.add('on');prev=z;k++;lensT=setTimeout(step,6500)};
  lensT=setTimeout(step,900)}
 const total=C.reduce((n,c)=>n+c[2].length,0);
 const PARTS=[{n:'I',t:'Learning to see culture',from:0,to:2,line:'First we learn to see. Objects, habits, rules nobody says out loud. Culture is hiding in plain sight.'},

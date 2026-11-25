@@ -101,16 +101,16 @@ select{width:auto;line-height:1.3}
 .sitecard .done{position:absolute;right:8px;top:8px;font:700 .7rem 'Courier New',monospace;color:var(--green);border:1.8px solid var(--green);padding:2px 5px;transform:rotate(6deg)}
 
 /* title screen */
-.titlescreen{position:relative;overflow:hidden;border:1.6px solid var(--ink);border-radius:6px;background:#fbf8f0;min-height:clamp(620px,calc(100vh - 140px),760px);margin:0 0 8px;box-shadow:3px 4px 0 rgba(0,0,0,.15)}
+.titlescreen{position:relative;overflow:hidden;border:1.6px solid var(--ink);border-radius:6px;background:#fbf8f0;height:max(480px,calc(100vh - 138px));margin:0;box-shadow:3px 4px 0 rgba(0,0,0,.15)}
 .tburst{position:absolute;width:150vmax;height:150vmax;right:calc(20% - 75vmax);top:calc(48% - 75vmax);background:repeating-conic-gradient(from 0deg,rgba(22,22,22,.045) 0 2deg,transparent 2deg 8deg);animation:spin 160s linear infinite;z-index:0}
 .tburst::after{content:'';position:absolute;inset:0;background:radial-gradient(circle at 50% 50%,#fbf8f0 0,rgba(251,248,240,.6) 7%,rgba(251,248,240,0) 22%)}
 @keyframes spin{to{transform:rotate(360deg)}}
 .titlescreen .pano{position:absolute;left:0;bottom:0;width:100%;height:auto;aspect-ratio:1760/290;z-index:1;overflow:visible}
 .tcontent{position:relative;z-index:3;max-width:58%;padding:clamp(18px,4vh,40px) clamp(18px,3vw,40px) 40px}
-.tcontent h1{font-size:clamp(2.2rem,5.2vw,3.9rem);margin:.08em 0 .1em;text-shadow:0 0 12px #fbf8f0,0 0 4px #fbf8f0}
+.tcontent h1{font-size:clamp(2rem,min(5.2vw,8.2vh),3.9rem);margin:.08em 0 .1em;text-shadow:0 0 12px #fbf8f0,0 0 4px #fbf8f0}
 .tcontent .sub{font:italic 1.12rem var(--serif);color:var(--graphite)}
 .tcontent .credit{font:700 .72rem system-ui,sans-serif;letter-spacing:.16em;text-transform:uppercase;margin:12px 0 8px}
-.titlescreen .thoney.ph{position:absolute;right:-2%;bottom:1%;height:68%;aspect-ratio:3/4;z-index:4}
+.titlescreen .thoney.ph{position:absolute;right:-2%;bottom:1%;height:72%;aspect-ratio:3/4;z-index:4}
 .pin-label{font:700 26px var(--hand);fill:var(--ink);paint-order:stroke;stroke:#fbf8f0;stroke-width:4px;stroke-linejoin:round}
 .route-reveal{stroke-dasharray:1;stroke-dashoffset:1;animation:reveal 4.2s .3s ease-in-out forwards}
 @keyframes reveal{to{stroke-dashoffset:0}}
@@ -150,15 +150,18 @@ select{width:auto;line-height:1.3}
 .zlabel{position:absolute;z-index:2;background:#fbf8f0;padding:3px 10px 4px;border-radius:4px;left:50%;bottom:-3%;transform:translate(-50%,6px) rotate(-3deg);white-space:nowrap;text-align:center;opacity:0;transition:opacity 1.2s ease .5s,transform 1.4s ease .5s;font:700 1.05rem/1.1 var(--hand);text-shadow:0 0 6px #fbf8f0,0 0 3px #fbf8f0}
 .zlabel small{display:block;font:italic .8rem var(--serif);color:var(--graphite)}
 .zone.on .zlabel{opacity:1;transform:translate(-50%,0) rotate(-3deg)}
-.z1{left:-2%;top:9%;width:clamp(260px,38%,400px)}
-.z2{left:39%;top:auto;bottom:11%;width:clamp(200px,min(29%,40vh),310px)}
-.z3{left:auto;right:23%;top:3%;width:clamp(200px,25%,270px)}
+.z1{left:-2%;top:9%;width:clamp(170px,min(38%,calc(100vh - 410px)),400px)}
+@media (min-width:761px) and (max-height:780px){#homeBubble{font-size:.86rem;padding:7px 11px;max-width:310px}.titlescreen .tcontent{padding-bottom:16px}.tcontent .credit{margin-top:4px}.z1{width:clamp(170px,min(38%,calc(100vh - 392px)),400px)}.titlescreen .thoney.ph{height:84%}}
+.z2{left:39%;top:auto;bottom:9%;width:clamp(170px,min(29%,37vh),310px)}
+.z3{left:auto;right:23%;top:3%;width:clamp(160px,min(25%,35vh),270px)}
 .tcontent{z-index:3}
 .tcontent .sub,.tcontent .credit{display:table;background:#fbf8f0;padding:2px 8px;margin-left:-8px;border-radius:3px}
 .tcontent .credit{margin-top:8px}
-#homeBubble{max-width:330px;margin-top:clamp(24px,13vh,118px)}
-.z1 .zlabel{left:auto;right:-8%;top:6%;bottom:auto;transform:translate(0,6px) rotate(-4deg);text-align:left}
-.zone.z1.on .zlabel{transform:translate(0,0) rotate(-4deg)}
+#homeBubble{max-width:330px;margin-top:auto}
+.titlescreen .tcontent{display:flex;flex-direction:column;align-items:flex-start;height:100%;padding-bottom:26px}
+body.home .sheet{padding:12px 12px 12px 66px;min-height:0}
+body.home .sheet::before{top:14px;bottom:14px}
+body.home .book{padding-bottom:10px}
 
 .qhead{display:grid;grid-template-columns:1fr 250px;gap:14px;align-items:center}
 .qimg{position:relative;margin:4px 4px 8px;background:#fffdf7;border:1.4px solid var(--ink);padding:6px;transform:rotate(1.2deg);box-shadow:2px 3px 0 rgba(0,0,0,.14)}
@@ -197,6 +200,9 @@ select{width:auto;line-height:1.3}
  .bubble::before{top:18px;left:-11px;border:10px solid transparent;border-right-color:var(--ink);border-left:0}
  .bubble::after{top:20px;left:-8px;border:8px solid transparent;border-right-color:#fff;border-left:0}
  .titlescreen{height:auto;min-height:700px}
+ .titlescreen .tcontent{height:auto}
+ #homeBubble{margin-top:8px}
+ body.home .sheet{padding:10px 10px 10px 40px}
  #homeBubble{margin-top:8px}
  .qhead{grid-template-columns:1fr}
  .qimg{max-width:280px;margin:6px auto 4px;order:-1}
@@ -726,7 +732,7 @@ function save(){try{localStorage.setItem('ethno-field-v1',JSON.stringify(s))}cat
 function update(){const n=Object.keys(s.a).length;document.getElementById('status').textContent=`Evidence points: ${score()} / ${total} • Decisions recorded: ${n} / ${total}`;document.getElementById('bar').style.width=(n/total*100)+'%'}
 function bubble(el,text){if(!el)return;el.innerHTML='<span class="who">Prof Honey</span>'+text;el.classList.remove('pop');void el.offsetWidth;el.classList.add('pop')}
 function honey(el,o){Honey.mount(el,Object.assign({dur:1.8},o))}
-function toTop(){window.scrollTo(0,0);v.focus({preventScroll:true})}
+function toTop(){if(!document.getElementById('titleScreen'))document.body.classList.remove('home');window.scrollTo(0,0);v.focus({preventScroll:true})}
 function partOf(i){return PARTS.findIndex(p=>i>=p.from&&i<=p.to)}
 
 function home(){
@@ -740,7 +746,7 @@ function home(){
   <div class="row">${next<0?'<button class="btn primary" onclick="report()">View my field notebook</button>':`<button class="btn primary" onclick="openCase(${next})">${started?'Continue at field site '+(next+1):'Start the first field site'}</button>`}<button class="btn" onclick="sites()">All field sites</button></div>
  </div><div class="thoney ph" id="homeHoney"></div></section>
 `;
- honey(document.getElementById('homeHoney'),{pose:'notes',draw:true,dur:2.6});lenses();
+ document.body.classList.add('home');honey(document.getElementById('homeHoney'),{pose:'notes',draw:true,dur:2.6});lenses();
  bubble(document.getElementById('homeBubble'),started?`Welcome back${s.name?', '+esc(s.name):''}. Your notebook is right where you left it.`:'Hello, I’m Professor Honey. Grab a pencil. We’re going to learn to see the ordinary as strange, and the strange as ordinary.');
  update();toTop()}
 
